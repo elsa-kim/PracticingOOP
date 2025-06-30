@@ -1,8 +1,9 @@
 package baseball;
 
-import baseball.model.Game;
+import baseball.model.TargetNumber;
 import baseball.model.GameState;
-import static baseball.model.GameState.CONTINUE;
+import baseball.model.Numbers;
+import baseball.model.Result;
 import baseball.view.InputView;
 import baseball.view.OutputView;
 
@@ -13,21 +14,21 @@ public class BaseballGame {
     public void run() {
         outputView.startMessage();
         do {
-            playGame();
+            TargetNumber targetNumber = new TargetNumber();
+            playGame(targetNumber);
         } while (isContinue());
     }
 
-    private void playGame() {
-        Game game = new Game();
-        int userNumber = getUserNumber();
-        while (!game.isSameNumber(userNumber)) {
-            game.checkResult(userNumber);
-            userNumber = getUserNumber();
+    private void playGame(TargetNumber targetNumber) {
+        Result result = targetNumber.checkResult(getUserNumber());
+        outputView.resultMessage(result.getBall(), result.getStrike());
+        if (!result.isThreeStrikes()) {
+            playGame(targetNumber);
         }
     }
 
     private boolean isContinue() {
-        return checkRestart() == CONTINUE;
+        return checkRestart() == GameState.CONTINUE;
     }
 
     private GameState checkRestart() {
@@ -35,9 +36,9 @@ public class BaseballGame {
         return inputView.getGameState();
     }
 
-    private int getUserNumber() {
+    private Numbers getUserNumber() {
         outputView.requestUserNumberMessage();
-        return Integer.parseInt(inputView.validate());
+        return inputView.getUserInput();
     }
 
 }
