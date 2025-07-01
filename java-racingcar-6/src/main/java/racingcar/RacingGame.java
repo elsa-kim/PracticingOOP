@@ -10,9 +10,22 @@ public class RacingGame {
     private final OutputView outputView = new OutputView();
 
     public void play() {
-        outputView.requestCarNamesMessage();
-        Cars.generateCars(inputView.getInput());
+        Cars cars = settingCars();
+        Racing racing = settingRacing();
+        while (!racing.isFinish()) {
+            cars = cars.changeCarsPosition();
+            racing = racing.nextTurn();
+        }
+    }
+
+
+    private Racing settingRacing() {
         outputView.requestRaceCountMessage();
-        Racing.fromInput(inputView.getInput());
+        return Racing.fromInput(inputView.getInput());
+    }
+
+    private Cars settingCars() {
+        outputView.requestCarNamesMessage();
+        return Cars.generateCars(inputView.getInput());
     }
 }
