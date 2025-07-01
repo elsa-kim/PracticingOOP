@@ -4,7 +4,7 @@ public class TargetNumber {
     private final Numbers target;
 
     public TargetNumber() {
-        this.target = Numbers.getRandomNumbers();
+        this.target = Numbers.generateRandomNumbers();
     }
 
     public Result checkResult(Numbers userNumber) {

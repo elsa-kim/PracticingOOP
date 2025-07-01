@@ -1,7 +1,8 @@
 # 숫자 야구
 
 [요구사항](../java-baseball-6/README.md)  
-[설계](../java-baseball-6/docs/README.md)
+[설계](../java-baseball-6/docs/README.md)  
+[코드](../java-baseball-6/)
 
 ## 피드백
 
@@ -17,6 +18,7 @@
 - 일급컬렉션 사용: 외부에서 컬렉션 직접 수정하지 못하게 보호
 - getter 남발하지 않기: 객체의 내부 상태를 꺼내기보단, 객체에게 메시지 보내기
 - 선언과 초기화 분리하지 말기: 코드 복잡해지면 문제 발생 가능
+- 팩토리메서드명 get 사용하지 말기: getter와 헷갈릴 수 있음. of, from, generate, create...로 사용하기
 
 ## 학습 내용 정리
 
