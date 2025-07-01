@@ -25,4 +25,13 @@ public class Cars {
     public Cars changeCarsPosition() {
         return new Cars(cars.stream().map(Car::changeCarPosition).toList());
     }
+
+    public String getProcess() {
+        String process = "";
+        for (Car car : cars) {
+            process+=car.getCarInfo();
+            process+="\n";
+        }
+        return process;
+    }
 }

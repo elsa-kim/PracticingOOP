@@ -12,9 +12,11 @@ public class RacingGame {
     public void play() {
         Cars cars = settingCars();
         Racing racing = settingRacing();
+        outputView.printResultMessage();
         while (!racing.isFinish()) {
             cars = cars.changeCarsPosition();
             racing = racing.nextTurn();
+            outputView.printProcess(cars);
         }
     }
 

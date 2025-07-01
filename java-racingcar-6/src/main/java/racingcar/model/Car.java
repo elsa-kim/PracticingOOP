@@ -38,4 +38,7 @@ public class Car {
     }
 
 
+    public String getCarInfo() {
+        return String.format("%s : %s", name, "-".repeat(position));
+    }
 }
