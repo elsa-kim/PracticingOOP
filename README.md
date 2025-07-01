@@ -9,3 +9,4 @@
 ### 프로젝트 정리
 
 1. [숫자야구](./docs/1_baseball.md)
+2. [자동차 경주](./docs/2_racingcar.md)
