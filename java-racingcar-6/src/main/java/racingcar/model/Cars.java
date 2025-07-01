@@ -34,4 +34,23 @@ public class Cars {
         }
         return process;
     }
+
+    public String getResult() {
+        String result = "최종 우승자 : ";
+        int maxPosition = getMaxPosition();
+        List<Car> winCars = cars.stream().filter(car->car.isWin(maxPosition)).toList();
+        for (int i = 0; i < winCars.size(); i++) {
+            if(i!=0) result += ", ";
+            result += winCars.get(i).getCarName();
+        }
+        return result;
+    }
+
+    private int getMaxPosition() {
+        int maxPosition = 0;
+        for (Car car : cars) {
+            maxPosition = car.getMaxPosition(maxPosition);
+        }
+        return maxPosition;
+    }
 }

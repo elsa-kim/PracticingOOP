@@ -1,7 +1,5 @@
 package racingcar.view;
 
-import racingcar.model.Cars;
-
 public class OutputView {
 
     public void requestCarNamesMessage() {
@@ -17,7 +15,7 @@ public class OutputView {
         System.out.println("실행 결과");
     }
 
-    public void printProcess(Cars cars) {
-        System.out.println(cars.getProcess());
+    public void printMessage(String message) {
+        System.out.println(message);
     }
 }

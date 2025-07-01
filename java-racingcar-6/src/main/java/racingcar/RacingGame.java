@@ -16,8 +16,9 @@ public class RacingGame {
         while (!racing.isFinish()) {
             cars = cars.changeCarsPosition();
             racing = racing.nextTurn();
-            outputView.printProcess(cars);
+            outputView.printMessage(cars.getProcess());
         }
+        outputView.printMessage(cars.getResult());
     }
 
 
