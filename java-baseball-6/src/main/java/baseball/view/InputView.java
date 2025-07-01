@@ -13,9 +13,9 @@ public class InputView {
     public GameState getGameState() {
         String input = Console.readLine();
         try {
-            return GameState.valueOf(input);
+            return GameState.checkState(input);
         } catch (Exception e) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(e.getMessage());
         }
     }
 }
