@@ -7,7 +7,7 @@ public class TargetNumber {
         this.target = Numbers.generateRandomNumbers();
     }
 
-    public Result checkResult(Numbers userNumber) {
-        return target.evaluateMatches(userNumber);
+    public Result compareWith(Numbers userNumber) {
+        return target.compareWith(userNumber);
     }
 }

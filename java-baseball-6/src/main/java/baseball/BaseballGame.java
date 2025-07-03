@@ -20,7 +20,7 @@ public class BaseballGame {
     }
 
     private void playGame(TargetNumber targetNumber) {
-        Result result = targetNumber.checkResult(getUserNumber());
+        Result result = targetNumber.compareWith(getUserNumber());
         outputView.resultMessage(result.getBall(), result.getStrike());
         if (!result.isThreeStrikes()) {
             playGame(targetNumber);

@@ -4,9 +4,17 @@ import camp.nextstep.edu.missionutils.Randoms;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class Numbers {
+    private static final String ERROR_OUT_OF_RANGE_MESSAGE = "%d 이상 %d 이하의 숫자만 가능합니다.";
+    private static final String ERROR_INVALID_LENGTH_MESSAGE = "%d자리 숫자를 입력해야 합니다.";
+    private static final String ERROR_DUPLICATE_VALUE_MESSAGE = "중복값이 존재하면 안됩니다.";
+    private static final String ERROR_NOT_A_NUMBER_MESSAGE = "숫자만 입력해야 합니다.";
+
     private static final int NUMBER_LENGTH = 3;
+    private static final int VALID_NUMBER_MIN = 1;
+    private static final int VALID_NUMBER_MAX = 9;
 
     private final List<Integer> numbers;
 
@@ -16,17 +24,19 @@ public class Numbers {
     }
 
     public static Numbers fromString(String inputNumber) {
-        validateNumberFormat(inputNumber);
-        return new Numbers(Arrays.stream(inputNumber.split(""))
-                .map(Integer::parseInt)
-                .toList());
-
+        try {
+            return new Numbers(Arrays.stream(inputNumber.split(""))
+                    .map(Integer::parseInt)
+                    .toList());
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException(ERROR_NOT_A_NUMBER_MESSAGE);
+        }
     }
 
     public static Numbers generateRandomNumbers() {
         List<Integer> numbers = new ArrayList<>();
-        while (numbers.size() < 3) {
-            int random = Randoms.pickNumberInRange(1, 9);
+        while (numbers.size() < NUMBER_LENGTH) {
+            int random = Randoms.pickNumberInRange(VALID_NUMBER_MIN, VALID_NUMBER_MAX);
             if (!numbers.contains(random)) {
                 numbers.add(random);
             }
@@ -40,33 +50,27 @@ public class Numbers {
         validateNoDuplicate(inputNumber);
     }
 
-    private static void validateNumberFormat(String inputNumber) {
-        try {
-            Integer.parseInt(inputNumber);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("숫자만 입력해야 합니다.");
-        }
-    }
-
     private void validateNumberRange(List<Integer> inputNumber) {
         if (!isInRange(inputNumber)) {
-            throw new IllegalArgumentException("1 이상 9 이하의 숫자만 가능합니다.");
+            throw new IllegalArgumentException(
+                    String.format(ERROR_OUT_OF_RANGE_MESSAGE, VALID_NUMBER_MIN, VALID_NUMBER_MAX));
         }
     }
 
     private boolean isInRange(List<Integer> inputNumber) {
-        return inputNumber.stream().allMatch(num -> num >= 1 && num <= 9);
+        return inputNumber.stream()
+                .allMatch(num -> num >= VALID_NUMBER_MIN && num <= VALID_NUMBER_MAX);
     }
 
     private void validateLength(List<Integer> inputNumber) {
         if (inputNumber.size() != NUMBER_LENGTH) {
-            throw new IllegalArgumentException(String.format("%d자리 숫자를 입력해야 합니다.", NUMBER_LENGTH));
+            throw new IllegalArgumentException(String.format(ERROR_INVALID_LENGTH_MESSAGE, NUMBER_LENGTH));
         }
     }
 
     private void validateNoDuplicate(List<Integer> inputNumber) {
         if (hasDuplicate(inputNumber)) {
-            throw new IllegalArgumentException("중복값이 존재하면 안됩니다.");
+            throw new IllegalArgumentException(ERROR_DUPLICATE_VALUE_MESSAGE);
         }
     }
 
@@ -76,14 +80,14 @@ public class Numbers {
                 .count();
     }
 
-    public Result evaluateMatches(Numbers userNumber) {
+    public Result compareWith(Numbers other) {
         int ball = 0;
         int strike = 0;
 
         for (int i = 0; i < numbers.size(); i++) {
-            if (userNumber.isStrike(numbers.get(i), i)) {
+            if (other.isStrike(numbers.get(i), i)) {
                 strike++;
-            } else if (userNumber.isBall(numbers.get(i))) {
+            } else if (other.isBall(numbers.get(i))) {
                 ball++;
             }
         }
@@ -95,6 +99,6 @@ public class Numbers {
     }
 
     private boolean isStrike(Integer targetNumber, int idx) {
-        return numbers.get(idx).equals(targetNumber);
+        return Objects.equals(numbers.get(idx), targetNumber);
     }
 }

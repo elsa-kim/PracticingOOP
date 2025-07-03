@@ -13,7 +13,7 @@ public class InputView {
     public GameState getGameState() {
         String input = Console.readLine();
         try {
-            return GameState.checkState(input);
+            return GameState.from(input);
         } catch (Exception e) {
             throw new IllegalArgumentException(e.getMessage());
         }

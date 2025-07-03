@@ -1,30 +1,30 @@
-package racingcar;
+package racingcar.controller;
 
-import racingcar.model.Cars;
-import racingcar.model.Racing;
+import racingcar.domain.Cars;
+import racingcar.domain.RacingGame;
 import racingcar.view.InputView;
 import racingcar.view.OutputView;
 
-public class RacingGame {
+public class RacingGameController {
     private final InputView inputView = new InputView();
     private final OutputView outputView = new OutputView();
 
     public void play() {
         Cars cars = settingCars();
-        Racing racing = settingRacing();
+        RacingGame racingGame = settingRacing();
         outputView.printResultMessage();
-        while (!racing.isFinish()) {
+        while (!racingGame.isFinish()) {
             cars = cars.changeCarsPosition();
-            racing = racing.nextTurn();
+            racingGame = racingGame.nextTurn();
             outputView.printMessage(cars.getProcess());
         }
         outputView.printMessage(cars.getResult());
     }
 
 
-    private Racing settingRacing() {
+    private RacingGame settingRacing() {
         outputView.requestRaceCountMessage();
-        return Racing.fromInput(inputView.getInput());
+        return RacingGame.fromInput(inputView.getInput());
     }
 
     private Cars settingCars() {

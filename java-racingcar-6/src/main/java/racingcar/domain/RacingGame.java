@@ -1,18 +1,18 @@
-package racingcar.model;
+package racingcar.domain;
 
-public class Racing {
+public class RacingGame {
     private final int turnNumber;
 
-    Racing(int turnNumber) {
+    RacingGame(int turnNumber) {
         this.turnNumber = turnNumber;
     }
 
-    public static Racing fromInput(String input) {
-        return new Racing(validate(input));
+    public static RacingGame fromInput(String input) {
+        return new RacingGame(validate(input));
     }
 
-    public Racing nextTurn() {
-        return new Racing(turnNumber - 1);
+    public RacingGame nextTurn() {
+        return new RacingGame(turnNumber - 1);
     }
 
     private static int validate(String input) {

@@ -1,4 +1,4 @@
-package racingcar.model;
+package racingcar.domain;
 
 import camp.nextstep.edu.missionutils.Randoms;
 
@@ -42,7 +42,6 @@ public class Car {
             throw new IllegalArgumentException("자동차 이름에 문자를 포함해야합니다.");
         }
     }
-
 
     public String getCarInfo() {
         return String.format("%s : %s", name, "-".repeat(position));

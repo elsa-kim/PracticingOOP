@@ -19,6 +19,8 @@
 - getter 남발하지 않기: 객체의 내부 상태를 꺼내기보단, 객체에게 메시지 보내기
 - 선언과 초기화 분리하지 말기: 코드 복잡해지면 문제 발생 가능
 - 팩토리메서드명 get 사용하지 말기: getter와 헷갈릴 수 있음. of, from, generate, create...로 사용하기
+- 매직 넘버 사용 지양 -> 상수로 선언해 사용하기
+- public 메서드 -> 단위 테스트 작성
 
 ## 학습 내용 정리
 
@@ -166,3 +168,13 @@
       | 필드 많을 때 | 불편       | 불편               | 유리                    |
       | 선택적 인자  | 불가능     | 가능 (오버로드)    | 가능                    |
       | 가독성       | 낮음       | 높음               | 가장 좋음               |
+
+- `@ParameterizedTest`
+  - @EnumSource(GameState.class)
+  - @NullSource
+  - @MethodSource("provideInputNumbers")
+  - @CsvSource(value = {"123,false", "345,true"})
+  - @ValueSource(strings = {"123", "935", "719"})
+- `@Nested`
+
+- 테스트코드 다 짜오기

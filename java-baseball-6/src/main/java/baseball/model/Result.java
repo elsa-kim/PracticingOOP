@@ -1,6 +1,8 @@
 package baseball.model;
 
 public class Result {
+    private static final int WINNING_STRIKE_COUNT = 3;
+
     private final int ball;
     private final int strike;
 
@@ -18,6 +20,6 @@ public class Result {
     }
 
     public boolean isThreeStrikes() {
-        return this.strike == 3;
+        return this.strike == WINNING_STRIKE_COUNT;
     }
 }

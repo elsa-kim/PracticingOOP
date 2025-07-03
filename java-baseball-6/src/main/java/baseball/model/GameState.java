@@ -13,7 +13,7 @@ public enum GameState {
         this.code = code;
     }
 
-    public static GameState checkState(String input) {
+    public static GameState from(String input) {
         return Arrays.stream(GameState.values())
                 .filter(state -> state.code.equals(input)).findFirst()
                 .orElseThrow(IllegalArgumentException::new);
