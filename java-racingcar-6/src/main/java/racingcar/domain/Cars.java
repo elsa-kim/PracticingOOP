@@ -1,58 +1,61 @@
 package racingcar.domain;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Cars {
+    private static final String ERROR_DUPLICATE_CAR_NAME = "중복된 이름을 사용할 수 없습니다.";
+
     private final List<Car> cars;
 
     public Cars(List<Car> cars) {
+        validateDuplication(cars);
         this.cars = cars;
     }
 
     public static Cars generateCars(String input) {
-        validateDuplication(input);
         List<Car> cars = Arrays.stream(input.split(",")).map(Car::createCar).toList();
         return new Cars(cars);
     }
 
-    private static void validateDuplication(String input) {
-        if (Arrays.stream(input.split(",")).distinct().count() != input.split(",").length) {
-            throw new IllegalArgumentException("중복된 이름을 사용할 수 없습니다.");
+    private void validateDuplication(List<Car> cars) {
+        if (isDuplication(cars)) {
+            throw new IllegalArgumentException(ERROR_DUPLICATE_CAR_NAME);
         }
     }
 
-    public Cars changeCarsPosition() {
-        return new Cars(cars.stream().map(Car::changeCarPosition).toList());
+    private boolean isDuplication(List<Car> cars) {
+        return cars.stream().distinct().count() != cars.size();
     }
 
-    public String getProcess() {
-        String process = "";
-        for (Car car : cars) {
-            process += car.getCarInfo();
-            process += "\n";
-        }
-        return process;
+    public Cars goOrStop() {
+        return new Cars(cars.stream().map(Car::goOrStop).toList());
     }
 
-    public String getResult() {
-        String result = "최종 우승자 : ";
+    public List<Car> getResult() {
         int maxPosition = getMaxPosition();
-        List<Car> winCars = cars.stream().filter(car -> car.isWin(maxPosition)).toList();
-        for (int i = 0; i < winCars.size(); i++) {
-            if (i != 0) {
-                result += ", ";
-            }
-            result += winCars.get(i).getCarName();
-        }
-        return result;
+        return cars.stream().filter(car -> car.isWin(maxPosition)).toList();
     }
 
     private int getMaxPosition() {
-        int maxPosition = 0;
-        for (Car car : cars) {
-            maxPosition = car.getMaxPosition(maxPosition);
-        }
-        return maxPosition;
+        List<Integer> positions = cars.stream()
+                .map(Car::getPosition)
+                .toList();
+
+        return Collections.max(positions);
+//        int maxPosition = cars.get(0).getPosition();
+//        for (Car car : cars) {
+//            maxPosition = Math.max(car.getPosition(), maxPosition);
+//        }
+//        return maxPosition;
+    }
+
+    public List<Car> getCars() {
+//        List<Car> cars1 = Collections.unmodifiableList(cars);
+//        new ArrayList<>(cars);
+//        Arrays.asList(cars.toArray());
+//        List.of(cars.toArray());
+        return List.copyOf(cars);
     }
 }

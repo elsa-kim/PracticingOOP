@@ -1,7 +1,7 @@
 package racingcar.controller;
 
 import racingcar.domain.Cars;
-import racingcar.domain.RacingGame;
+import racingcar.domain.RaceCount;
 import racingcar.view.InputView;
 import racingcar.view.OutputView;
 
@@ -11,20 +11,24 @@ public class RacingGameController {
 
     public void play() {
         Cars cars = settingCars();
-        RacingGame racingGame = settingRacing();
-        outputView.printResultMessage();
-        while (!racingGame.isFinish()) {
-            cars = cars.changeCarsPosition();
-            racingGame = racingGame.nextTurn();
-            outputView.printMessage(cars.getProcess());
-        }
-        outputView.printMessage(cars.getResult());
+        RaceCount raceCount = settingRacing();
+        renderGameProgress(raceCount, cars);
     }
 
+    private void renderGameProgress(RaceCount raceCount, Cars cars) {
+        outputView.printResultMessage();
+        int tryCnt = 0;
+        while (!raceCount.isFinish(tryCnt)) {
+            cars = cars.goOrStop();
+            outputView.printProcessMessage(cars.getCars());
+            tryCnt++;
+        }
+        outputView.printFinalResultMessage(cars.getResult());
+    }
 
-    private RacingGame settingRacing() {
+    private RaceCount settingRacing() {
         outputView.requestRaceCountMessage();
-        return RacingGame.fromInput(inputView.getInput());
+        return RaceCount.fromInput(inputView.getInput());
     }
 
     private Cars settingCars() {
