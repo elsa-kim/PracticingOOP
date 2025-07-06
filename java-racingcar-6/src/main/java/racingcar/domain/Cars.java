@@ -9,7 +9,7 @@ public class Cars {
 
     private final List<Car> cars;
 
-    public Cars(List<Car> cars) {
+    private Cars(List<Car> cars) {
         validateDuplication(cars);
         this.cars = cars;
     }
@@ -52,7 +52,7 @@ public class Cars {
     }
 
     public List<Car> getCars() {
-//        List<Car> cars1 = Collections.unmodifiableList(cars);
+//        Collections.unmodifiableList(cars);
 //        new ArrayList<>(cars);
 //        Arrays.asList(cars.toArray());
 //        List.of(cars.toArray());

@@ -3,7 +3,7 @@ package racingcar.domain;
 import camp.nextstep.edu.missionutils.Randoms;
 
 public class CarPosition {
-    public static final String ERROR_INVALID_POSITION = "위치는 음수일 수 없습니다.";
+    private static final String ERROR_INVALID_POSITION = "위치는 음수일 수 없습니다.";
     private static final int START_POSITION = 0;
     private static final int MOVE_THRESHOLD = 4;
 

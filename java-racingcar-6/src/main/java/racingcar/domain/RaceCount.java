@@ -6,7 +6,7 @@ public class RaceCount {
 
     private final int count;
 
-    RaceCount(int count) {
+    private RaceCount(int count) {
         validateIsPositiveNumber(count);
         this.count = count;
     }

@@ -37,6 +37,10 @@
     - 반환타입: 불변 리스트(`UnsupportedOperationException` 발생)
       - set도 불가
     - 내부 요소 참조: 복사된 객체
+  - `List.copyOf(cars)`
+    - 반환타입: 불변 리스트
+    - 내부 요소 참조: 같은 객체
+    - 원본 리스트 또는 요소에 null이 있으면 NullPointerException 발생
 
 ## todo
 

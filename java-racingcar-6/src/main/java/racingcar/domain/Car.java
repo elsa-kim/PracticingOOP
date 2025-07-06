@@ -4,7 +4,7 @@ public class Car {
     private final CarName name;
     private final CarPosition position;
 
-    public Car(CarName name, CarPosition position) {
+    private Car(CarName name, CarPosition position) {
         this.name = name;
         this.position = position;
     }
