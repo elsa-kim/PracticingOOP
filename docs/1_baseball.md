@@ -169,12 +169,97 @@
       | 선택적 인자  | 불가능     | 가능 (오버로드)    | 가능                    |
       | 가독성       | 낮음       | 높음               | 가장 좋음               |
 
-- `@ParameterizedTest`
-  - @EnumSource(GameState.class)
-  - @NullSource
-  - @MethodSource("provideInputNumbers")
-  - @CsvSource(value = {"123,false", "345,true"})
-  - @ValueSource(strings = {"123", "935", "719"})
-- `@Nested`
+- `equals()`
+  - `객체1.equals(객체2)`: 객체가 null일 경우 NullPointerException 발생
+  - `Objects.equals(객체1, 객체2)`: null에 안전한 비교방식
+- `@ParameterizedTest`: 여러 입력 값을 자동으로 주입하여 테스트를 반복 실행할 수 있게 해주는 JUnit 5 기능
 
-- 테스트코드 다 짜오기
+  - 소스 어노테이션
+
+    - `@ValueSource`
+      - 단일 타입의 단일 값 목록 제공
+      ```java
+      @ParameterizedTest
+      @ValueSource(strings = {"123", "935", "719"})
+      void testWithStringValues(String input) {
+          // input: "123", "935", "719"
+      }
+      ```
+    - `@CsvSource`
+      - 여러 파라미터를 CSV 형식으로 전달
+      ```java
+      @ParameterizedTest
+      @CsvSource({"123,false", "345,true"})
+      void testWithCsv(String input, boolean expected) {
+          // input: "123", "345" & expected: false / true
+      }
+      ```
+    - `@EnumSource`
+      - Enum 타입의 상수들을 전달
+      ```java
+      @ParameterizedTest
+      @EnumSource(GameState.class)
+      void testWithEnum(GameState state) {
+        // state: GameState의 각 상수
+      }
+      ```
+    - `@NullSource`
+      - null 값을 하나 전달
+      ```java
+      @ParameterizedTest
+      @NullSource
+      void testWithNull(String input) {
+        // input: null
+      }
+      ```
+    - `@MethodSource`
+
+      - 커스텀 메서드에서 Stream/Collection으로 값 공급
+
+      ```java
+      @ParameterizedTest
+      @MethodSource("provideInputNumbers")
+      void testWithMethod(String input) {
+        // input: 각 제공 값
+      }
+
+      // 단일인자
+      static Stream<String> provideInputNumbers() {
+        return Stream.of("123", "456", "789");
+      }
+
+      // 여러인자
+      static Stream<Arguments> provideInputNumbers() {
+        return Stream.of(
+            Arguments.of("123", false),
+            Arguments.of("345", true)
+        );
+      }
+      ```
+
+- `@Nested`: 테스트 클래스 안에 내부 클래스를 정의할 때 사용
+
+  - 테스트를 계층적으로, 조건/상황별로 그룹핑
+  - 특징
+    - 내부 클래스는 static이 아니어야 함
+    - 외부 클래스의 `@BeforeEach`, `@BeforeAll` 등을 상속하지 않음
+
+  ```java
+  class LoginServiceTest {
+
+        @Nested
+        class tryLogin {
+
+            @Test
+            void 로그인이_성공한다() {
+                // ...
+            }
+
+            @Test
+            void 로그인_시_예외가_발생한다() {
+                // ...
+            }
+        }
+    }
+
+  ```
