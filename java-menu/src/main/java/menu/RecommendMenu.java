@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import menu.domain.Coach;
 import menu.domain.Coaches;
+import menu.domain.Recommend;
 import menu.view.InputView;
 import menu.view.OutputView;
 
@@ -14,11 +15,12 @@ public class RecommendMenu {
     public void recommend() {
         Coaches coaches = settingCoachesName();
         coaches = settingCannotEatFoods(coaches);
+        Recommend recommend = Recommend.generate();
     }
 
     private Coaches settingCannotEatFoods(Coaches coaches) {
         List<Coach> updateCoaches = new ArrayList<>();
-        for(Coach coach: coaches.getCoaches()){
+        for (Coach coach : coaches.getCoaches()) {
             outputView.requireCannotEatFoodsMessage(coach.getName());
             updateCoaches.add(coach.create(inputView.readInput()));
         }

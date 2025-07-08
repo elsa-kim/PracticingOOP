@@ -28,7 +28,7 @@ public class Coaches {
     }
 
     private void validateDuplication(List<Coach> coaches) {
-        if(isDuplicate(coaches)) {
+        if (isDuplicate(coaches)) {
             throw new IllegalArgumentException("[ERROR] 중복된 코치 이름을 입력할 수 없습니다.");
         }
     }
