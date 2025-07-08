@@ -13,7 +13,7 @@ public class RaceCount {
 
     public static RaceCount fromInput(String input) {
         try {
-            int turn = Integer.parseInt(input);
+            int turn = Integer.parseInt(input.trim());
             return new RaceCount(turn);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(ERROR_NOT_NUMERIC);
@@ -21,7 +21,7 @@ public class RaceCount {
     }
 
     private void validateIsPositiveNumber(int turnNumber) {
-        if (turnNumber < 0) {
+        if (turnNumber < 1) {
             throw new IllegalArgumentException(ERROR_OUT_OF_RANGE);
         }
     }

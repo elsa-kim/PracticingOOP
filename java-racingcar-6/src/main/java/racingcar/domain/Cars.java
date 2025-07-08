@@ -15,7 +15,7 @@ public class Cars {
     }
 
     public static Cars generateCars(String input) {
-        List<Car> cars = Arrays.stream(input.split(",")).map(Car::createCar).toList();
+        List<Car> cars = Arrays.stream(input.split(",", -1)).map(Car::createCar).toList();
         return new Cars(cars);
     }
 

@@ -42,6 +42,11 @@
     - 내부 요소 참조: 같은 객체
     - 원본 리스트 또는 요소에 null이 있으면 NullPointerException 발생
 
-## todo
-
-- 테스트코드 작성
+- `String.split()`
+  - `split(String regex)`: 내부적으로 `split(regex, 0)` 호출
+  - `split(String regex, int limit)`
+    - `regex`: 문자열을 나눌 기준, 메타 문자를 단순 문자로 사용하려면 이스케이프 필요
+    - `limit`: 나눌 문자열의 최대 개수 또는 동작 방식을 제어하는 값
+      - 양수 N: 최대 N개 요소만 반환(N-1번만 나누고 나머지 마지막에 다 반환)
+      - 0: 기본값. 나눈 후 배열 끝의 빈 문자열 제거
+      - 음수: 나눈 후 빈 문자열 포함 전부 반환
