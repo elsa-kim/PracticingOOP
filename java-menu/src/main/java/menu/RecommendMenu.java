@@ -15,7 +15,7 @@ public class RecommendMenu {
     public void recommend() {
         Coaches coaches = settingCoachesName();
         coaches = settingCannotEatFoods(coaches);
-        Recommend recommend = Recommend.generate();
+        Recommend recommend = Recommend.generate(coaches);
     }
 
     private Coaches settingCannotEatFoods(Coaches coaches) {

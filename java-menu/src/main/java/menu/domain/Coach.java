@@ -1,5 +1,6 @@
 package menu.domain;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -7,14 +8,16 @@ import java.util.stream.Collectors;
 public class Coach {
     private final String name;
     private final List<Food> cannotEatFoods;
+    private final List<Food> recommendFoods;
 
-    private Coach(String name, List<Food> cannotEatFoods) {
+    private Coach(String name, List<Food> cannotEatFoods, List<Food> recommendFoods) {
         this.name = name;
         this.cannotEatFoods = cannotEatFoods;
+        this.recommendFoods = recommendFoods;
     }
 
     public static Coach from(String coachName) {
-        return new Coach(coachName, null);
+        return new Coach(coachName, new ArrayList<>(), new ArrayList<>());
     }
 
     public Coach create(String input) {
@@ -22,7 +25,11 @@ public class Coach {
                 .map(Food::from)
                 .collect(Collectors.toList());
         validateCannotEatFoods(cannotEatFoods);
-        return new Coach(name, cannotEatFoods);
+        return new Coach(name, cannotEatFoods, new ArrayList<>());
+    }
+
+    public Coach withRecommendedFoods(List<Food> recommendFoods) {
+        return new Coach(name, cannotEatFoods, recommendFoods);
     }
 
     private static void validateCannotEatFoods(List<Food> cannotEatFoods) {
@@ -33,5 +40,17 @@ public class Coach {
 
     public String getName() {
         return name;
+    }
+
+    public List<Food> getRecommendFoods(){
+        return List.copyOf(this.recommendFoods);
+    }
+
+    public boolean isCannotEat(Food pickedMenu) {
+        return cannotEatFoods.contains(pickedMenu);
+    }
+
+    public boolean isAlreadyInRecommend(Food pickedMenu) {
+        return recommendFoods.contains(pickedMenu);
     }
 }
