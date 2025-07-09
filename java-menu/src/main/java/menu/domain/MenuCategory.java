@@ -6,10 +6,11 @@ public enum MenuCategory {
     한식, 일식, 중식, 아시안, 양식;
 
     public static MenuCategory pickOne() {
-        return MenuCategory.values()[pickRandomNumber()];
+        return MenuCategory.values()[pickRandomNumber() - 1];
     }
 
-    private static int pickRandomNumber() {
-        return Randoms.pickNumberInRange(0, MenuCategory.values().length - 1);
+    public static int pickRandomNumber() {
+        System.out.println();
+        return Randoms.pickNumberInRange(1, MenuCategory.values().length);
     }
 }

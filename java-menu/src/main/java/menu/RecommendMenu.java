@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import menu.domain.Coach;
 import menu.domain.Coaches;
+import menu.domain.MenuCategory;
 import menu.domain.Recommend;
 import menu.view.InputView;
 import menu.view.OutputView;

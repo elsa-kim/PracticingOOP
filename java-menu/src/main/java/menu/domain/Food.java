@@ -44,6 +44,7 @@ public enum Food {
                         .filter(menu -> menu.getMenuCategory().equals(pickedCategory))
                         .map(Enum::toString)
                         .collect(Collectors.toList()))
-                .get(0);
+                .get(0)
+                .replaceAll(" ", "_");
     }
 }

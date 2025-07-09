@@ -14,23 +14,27 @@ public class Recommend {
 
     public static Recommend generate(Coaches coaches) {
         List<MenuCategory> menuCategories = new ArrayList<>();
-        MenuCategory pickedCategory = MenuCategory.pickOne();
-        while(isCategoryPickedTwice(menuCategories, pickedCategory)){
-            pickedCategory = MenuCategory.pickOne();
-        }
-        menuCategories.add(pickedCategory);
-
-        List<Coach> CoachesWithRecommend = new ArrayList<>();
-        for(Coach coach : coaches.getCoaches()) {
-            List<Food> foods = new ArrayList<>(coach.getRecommendFoods());
-            Food pickedMenu = Food.pickOne(pickedCategory);
-            while(coach.isCannotEat(pickedMenu) || coach.isAlreadyInRecommend(pickedMenu)){
-                pickedMenu = Food.pickOne(pickedCategory);
+        List<Coach> coachesWithRecommend = new ArrayList<>(coaches.getCoaches());
+        for (int i = 0; i < 5; i++) {
+            MenuCategory pickedCategory = MenuCategory.pickOne();
+            while (isCategoryPickedTwice(menuCategories, pickedCategory)) {
+                pickedCategory = MenuCategory.pickOne();
             }
-            foods.add(pickedMenu);
-            CoachesWithRecommend.add(coach.withRecommendedFoods(foods));
+            menuCategories.add(pickedCategory);
+
+            for (int idx = 0; idx < coachesWithRecommend.size(); idx++) {
+                Coach coach = coachesWithRecommend.get(idx);
+                List<Food> foods = new ArrayList<>(coach.getRecommendFoods());
+                Food pickedMenu = Food.pickOne(pickedCategory);
+                while (coach.isCannotEat(pickedMenu) || coach.isAlreadyInRecommend(pickedMenu)) {
+                    pickedMenu = Food.pickOne(pickedCategory);
+                }
+                foods.add(pickedMenu);
+                coachesWithRecommend.set(idx, coach.withRecommendedFoods(foods));
+            }
+
         }
-        Coaches updatedCoaches = Coaches.generate(CoachesWithRecommend);
+        Coaches updatedCoaches = Coaches.generate(coachesWithRecommend);
 
         return new Recommend(menuCategories, updatedCoaches);
     }
