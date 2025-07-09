@@ -26,7 +26,7 @@ public class Recommend {
                 Coach coach = coachesWithRecommend.get(idx);
                 List<Food> foods = new ArrayList<>(coach.getRecommendFoods());
                 Food pickedMenu = Food.pickOne(pickedCategory);
-                while (coach.isCannotEat(pickedMenu) || coach.isAlreadyInRecommend(pickedMenu)) {
+                while (coach.isExcludedFood(pickedMenu) || coach.isAlreadyInRecommend(pickedMenu)) {
                     pickedMenu = Food.pickOne(pickedCategory);
                 }
                 foods.add(pickedMenu);
