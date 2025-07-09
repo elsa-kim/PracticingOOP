@@ -12,7 +12,7 @@ public class Coaches {
     }
 
     public static Coaches from(String coachName) {
-        List<String> names = List.of(coachName.split(","));
+        List<String> names = List.of(coachName.split(",", -1));
         return new Coaches(names.stream()
                 .map(Coach::from)
                 .collect(Collectors.toList()));

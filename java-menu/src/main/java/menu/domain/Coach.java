@@ -11,6 +11,7 @@ public class Coach {
     private final List<Food> recommendFoods;
 
     private Coach(String name, List<Food> cannotEatFoods, List<Food> recommendFoods) {
+        validateName(name);
         this.name = name;
         this.cannotEatFoods = cannotEatFoods;
         this.recommendFoods = recommendFoods;
@@ -30,6 +31,12 @@ public class Coach {
 
     public Coach withRecommendedFoods(List<Food> recommendFoods) {
         return new Coach(name, cannotEatFoods, recommendFoods);
+    }
+
+    private void validateName(String name){
+        if(name.length()<2 || name.length()>4){
+            throw new IllegalArgumentException("[ERROR] 코치의 이름은 2자 이상 4자 이하로 입력해야합니다.");
+        }
     }
 
     private static void validateCannotEatFoods(List<Food> cannotEatFoods) {
