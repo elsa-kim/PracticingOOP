@@ -42,7 +42,7 @@ public class Coach {
         return name;
     }
 
-    public List<Food> getRecommendFoods(){
+    public List<Food> getRecommendFoods() {
         return List.copyOf(this.recommendFoods);
     }
 

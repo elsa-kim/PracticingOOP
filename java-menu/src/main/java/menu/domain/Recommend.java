@@ -43,5 +43,12 @@ public class Recommend {
         return menuCategories.stream().filter(category -> category == pick).count() >= 2;
     }
 
+    public List<MenuCategory> getMenuCategories() {
+        return List.copyOf(menuCategories);
+    }
+
+    public List<Coach> getCoaches() {
+        return coaches.getCoaches();
+    }
 
 }
