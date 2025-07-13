@@ -15,7 +15,9 @@ public class Cars {
     }
 
     public static Cars generateCars(String input) {
-        List<Car> cars = Arrays.stream(input.split(",", -1)).map(Car::createCar).toList();
+        List<Car> cars = Arrays.stream(input.split(",", -1))
+                .map(Car::createCar)
+                .toList();
         return new Cars(cars);
     }
 
@@ -26,16 +28,25 @@ public class Cars {
     }
 
     private boolean isDuplication(List<Car> cars) {
-        return cars.stream().distinct().count() != cars.size();
+        return cars.size() != cars.stream()
+                .distinct()
+                .count();
     }
 
     public Cars goOrStop() {
-        return new Cars(cars.stream().map(Car::goOrStop).toList());
+        List<Car> result = cars.stream()
+                .map(Car::goOrStop)
+                .toList();
+
+        return new Cars(result);
     }
 
     public List<Car> getResult() {
         int maxPosition = getMaxPosition();
-        return cars.stream().filter(car -> car.isWin(maxPosition)).toList();
+
+        return cars.stream()
+                .filter(car -> car.isWin(maxPosition))
+                .toList();
     }
 
     private int getMaxPosition() {

@@ -19,7 +19,7 @@ class CarNameTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"", "aaaaaa"})
-    void 팩토리메서드_from_에_빈값_또는_5자_이상_값을_넣으면_예외가_빌생한다(String input) {
+    void 팩토리메서드_from_에_빈값_또는_5자_이상_값을_넣으면_예외가_발생한다(String input) {
         // when & then
         assertThatThrownBy(() -> CarName.from(input))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -28,7 +28,7 @@ class CarNameTest {
 
     @ParameterizedTest
     @ValueSource(strings = {" ", "   "})
-    void 팩토리메서드_from_에_공백값을_넣으면_예외가_빌생한다(String input) {
+    void 팩토리메서드_from_에_공백값을_넣으면_예외가_발생한다(String input) {
         // when & then
         assertThatThrownBy(() -> CarName.from(input))
                 .isInstanceOf(IllegalArgumentException.class)

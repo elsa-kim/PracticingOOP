@@ -21,6 +21,17 @@ class CarsTest {
         assertThat(cars).isNotNull();
     }
 
+    @Test
+    void 중복된_차_이름을_입력하면_예외가_발생한다(){
+        // given
+        String input = "aa,bb,bb";
+
+        // when & then
+        assertThatThrownBy(()->Cars.generateCars(input))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("중복된 이름을 사용할 수 없습니다.");
+    }
+
     @ParameterizedTest
     @ValueSource(strings = {"aa,,bb", "aa,bb,", ",aa,bb,cc", "aa,bb,cccccc"})
     void 차_이름_글자수_1미만_5초과하여_넣으면_예외가_발생한다(String input) {
@@ -62,7 +73,7 @@ class CarsTest {
         List<Car> winCars = cars.getResult();
 
         // then
-        assertThat(winCars.size()).isPositive();
+        assertThat(winCars.size()).isEqualTo(3);
     }
 
 }
