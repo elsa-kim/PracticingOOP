@@ -3,10 +3,24 @@ package menu.domain;
 import camp.nextstep.edu.missionutils.Randoms;
 
 public enum MenuCategory {
-    일식, 한식, 중식, 아시안, 양식;
+    JAPANESE("일식"),
+    KOREAN("한식"),
+    CHINESE("중식"),
+    ASIAN("아시안"),
+    WESTERN("양식");
+
+    private String label;
+
+    MenuCategory(String label) {
+        this.label = label;
+    }
 
     public static MenuCategory pickOne() {
         return MenuCategory.values()[pickRandomNumber() - 1];
+    }
+
+    public String getLabel() {
+        return this.label;
     }
 
     private static int pickRandomNumber() {

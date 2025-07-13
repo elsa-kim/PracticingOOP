@@ -1,10 +1,16 @@
 package menu;
 
-import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
-import menu.domain.Coach;
+import java.util.Map;
+import java.util.stream.Collectors;
+import menu.domain.CoachName;
+import menu.domain.CoachNames;
 import menu.domain.Coaches;
-import menu.domain.Recommend;
+import menu.domain.ExcludedMenus;
+import menu.domain.RecommendCategories;
+import menu.dto.response.CoachResponse;
+import menu.dto.response.RecommendResponse;
 import menu.view.InputView;
 import menu.view.OutputView;
 
@@ -13,37 +19,53 @@ public class RecommendMenu {
     private static final InputView inputView = new InputView();
 
     public void recommend() {
+        Map<CoachName, ExcludedMenus> excludedFoodsMap = settingInfo();
+        RecommendCategories recommendCategories = RecommendCategories.generate();
+        Coaches coaches = Coaches.generate(recommendCategories, excludedFoodsMap);
+
+        printResult(recommendCategories, coaches);
+    }
+
+    private static void printResult(RecommendCategories recommendCategories, Coaches coaches) {
+        List<CoachResponse> coachResponses = coaches.getCoaches().stream()
+                .map(CoachResponse::from)
+                .collect(Collectors.toList());
+
+        RecommendResponse response = RecommendResponse.from(recommendCategories, coachResponses);
+        outputView.printResult(response);
+    }
+
+    private Map<CoachName, ExcludedMenus> settingInfo() {
         outputView.printStartMessage();
-        Coaches coaches = settingCoachesName();
-        coaches = settingCannotEatFoods(coaches);
-        Recommend recommend = Recommend.generate(coaches);
-        outputView.printResult(recommend);
+        CoachNames coachNames = settingCoachesName();
+        return settingCannotEatFoods(coachNames);
     }
 
-    private Coaches settingCannotEatFoods(Coaches coaches) {
-        List<Coach> updateCoaches = new ArrayList<>();
-        for (Coach coach : coaches.getCoaches()) {
-            updateCoaches.add(requestCannotEatFoodsFor(coach));
+    private Map<CoachName, ExcludedMenus> settingCannotEatFoods(CoachNames coaches) {
+        Map<CoachName, ExcludedMenus> excludedFoodsMap = new LinkedHashMap<>();
+        for (CoachName name : coaches.getCoachNames()) {
+            excludedFoodsMap.put(name, requestCannotEatFoodsFor(name));
         }
-        return Coaches.generate(updateCoaches);
+        return excludedFoodsMap;
     }
 
-    private static Coach requestCannotEatFoodsFor(Coach coach) {
-        outputView.requestCannotEatFoodsMessage(coach.getName());
+    private static ExcludedMenus requestCannotEatFoodsFor(CoachName name) {
+        outputView.requestCannotEatFoodsMessage(name.getName());
         try {
-            return coach.create(inputView.readInput());
+            return ExcludedMenus.from(inputView.readExcludedFoodsInput().getFoods());
         } catch (IllegalArgumentException e) {
-            outputView.printError(e.getMessage());
-            return requestCannotEatFoodsFor(coach);
+            outputView.printError(e);
+            return requestCannotEatFoodsFor(name);
         }
     }
 
-    private Coaches settingCoachesName() {
+    private CoachNames settingCoachesName() {
         outputView.requireCoachNameMessage();
+        List<String> names = inputView.readCoachesNameInput().getNames();
         try {
-            return Coaches.from(inputView.readInput());
+            return CoachNames.from(names);
         } catch (IllegalArgumentException e) {
-            outputView.printError(e.getMessage());
+            outputView.printError(e);
             return settingCoachesName();
         }
     }

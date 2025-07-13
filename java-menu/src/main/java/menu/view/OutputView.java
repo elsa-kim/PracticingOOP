@@ -1,10 +1,8 @@
 package menu.view;
 
 import java.util.List;
-import menu.domain.Coach;
-import menu.domain.Food;
-import menu.domain.MenuCategory;
-import menu.domain.Recommend;
+import menu.dto.response.CoachResponse;
+import menu.dto.response.RecommendResponse;
 
 public class OutputView {
     public void requireCoachNameMessage() {
@@ -20,7 +18,7 @@ public class OutputView {
         System.out.printf("%s(이)가 못 먹는 메뉴를 입력해 주세요.%n", name);
     }
 
-    public void printResult(Recommend recommend) {
+    public void printResult(RecommendResponse recommend) {
         System.out.println("메뉴 추천 결과입니다.");
         System.out.println("[ 구분 | 월요일 | 화요일 | 수요일 | 목요일 | 금요일 ]");
         printCategory(recommend.getMenuCategories());
@@ -29,25 +27,25 @@ public class OutputView {
         System.out.println("추천을 완료했습니다.");
     }
 
-    private static void printMenu(List<Coach> coaches) {
-        for (Coach coach : coaches) {
-            System.out.printf("[ %s", coach.getName());
-            for (Food menu : coach.getRecommendFoods()) {
-                System.out.printf(" | %s", menu.name().replaceAll("_", " "));
+    public void printError(Exception e) {
+        System.out.println("[ERROR] " + e.getMessage());
+    }
+
+    private static void printMenu(List<CoachResponse> coaches) {
+        for (CoachResponse coach : coaches) {
+            System.out.printf("[ %s", coach.getCoachName());
+            for (String menu : coach.getRecommendMenus()) {
+                System.out.printf(" | %s", menu);
             }
             System.out.println(" ]");
         }
     }
 
-    private static void printCategory(List<MenuCategory> menuCategories) {
+    private static void printCategory(List<String> menuCategories) {
         System.out.print("[ 카테고리 ");
-        for (MenuCategory category : menuCategories) {
-            System.out.printf("| %s ", category.name());
+        for (String category : menuCategories) {
+            System.out.printf("| %s ", category);
         }
         System.out.println("]");
-    }
-
-    public void printError(String message) {
-        System.out.println(message);
     }
 }

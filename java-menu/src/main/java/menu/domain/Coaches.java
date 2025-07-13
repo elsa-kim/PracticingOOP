@@ -1,62 +1,60 @@
 package menu.domain;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 public class Coaches {
-    private static final String ERROR_DUPLICATE_COACH_NAME = "[ERROR] 코치 이름을 중복하여 입력할 수 없습니다.";
-    private static final String ERROR_MINIMUM_COACH_COUNT = "[ERROR] 코치는 최소 %d명 이상 입력해야 합니다.";
-    private static final String ERROR_MAXIMUM_COACH_COUNT = "[ERROR] 코치는 최대 %d명 이하 입력해야 합니다.";
-    private static final int MIN_COACH_COUNT = 2;
-    private static final int MAX_COACH_COUNT = 5;
-
     private final List<Coach> coaches;
 
     private Coaches(List<Coach> coaches) {
-        validate(coaches);
         this.coaches = coaches;
     }
 
-    public static Coaches from(String coachName) {
-        List<String> names = List.of(coachName.split(",", -1));
-        validateDuplication(names);
-        return new Coaches(names.stream()
-                .map(Coach::from)
-                .collect(Collectors.toList()));
-    }
+    public static Coaches generate(RecommendCategories recommendCategories, Map<CoachName, ExcludedMenus> infoMap) {
+        Map<CoachName, List<Menu>> recommendMenusMap = new LinkedHashMap<>();
 
-    public static Coaches generate(List<Coach> updateCoaches) {
-        return new Coaches(updateCoaches);
-    }
-
-    private void validate(List<Coach> coaches) {
-        validateMinimumCoachCount(coaches.size());
-        validateMaximumCoachCount(coaches.size());
-    }
-
-    private static void validateDuplication(List<String> names) {
-        if (isDuplicate(names)) {
-            throw new IllegalArgumentException(ERROR_DUPLICATE_COACH_NAME);
+        for (MenuCategory menuCategory : recommendCategories.getMenuCategories()) {
+            infoMap.forEach((name, excludedMenus) -> {
+                List<Menu> recommends = pickMenu(name, excludedMenus, recommendMenusMap, menuCategory);
+                recommendMenusMap.put(name, recommends);
+            });
         }
-    }
 
-    private static boolean isDuplicate(List<String> names) {
-        return names.stream().distinct().count() != names.size();
-    }
+        List<Coach> Coaches = generateCoaches(recommendMenusMap);
 
-    private void validateMinimumCoachCount(int coachesNumber) {
-        if (coachesNumber < MIN_COACH_COUNT) {
-            throw new IllegalArgumentException(String.format(ERROR_MINIMUM_COACH_COUNT, MIN_COACH_COUNT));
-        }
-    }
-
-    private void validateMaximumCoachCount(int coachesNumber) {
-        if (coachesNumber > MAX_COACH_COUNT) {
-            throw new IllegalArgumentException(String.format(ERROR_MAXIMUM_COACH_COUNT, MAX_COACH_COUNT));
-        }
+        return new Coaches(Coaches);
     }
 
     public List<Coach> getCoaches() {
-        return List.copyOf(this.coaches);
+        return List.copyOf(coaches);
+    }
+
+    private static List<Coach> generateCoaches(Map<CoachName, List<Menu>> recommends) {
+        List<Coach> Coaches = new ArrayList<>();
+        recommends.forEach((coachName, recommendMenus) -> {
+            Coach coach = Coach.of(coachName, recommendMenus);
+            Coaches.add(coach);
+        });
+        return Coaches;
+    }
+
+    private static List<Menu> pickMenu(CoachName coachName,
+                                       ExcludedMenus excludedMenus,
+                                       Map<CoachName, List<Menu>> recommendMenusMap,
+                                       MenuCategory pickedCategory) {
+        List<Menu> recommends = recommendMenusMap.getOrDefault(coachName, new ArrayList<>());
+
+        Menu pickedMenu = Menu.pickOne(pickedCategory);
+        while (cannotAdd(excludedMenus, recommends, pickedMenu)) {
+            pickedMenu = Menu.pickOne(pickedCategory);
+        }
+        recommends.add(pickedMenu);
+        return recommends;
+    }
+
+    private static boolean cannotAdd(ExcludedMenus excludedMenus, List<Menu> menus, Menu pickedMenu) {
+        return excludedMenus.isContain(pickedMenu) || menus.contains(pickedMenu);
     }
 }
