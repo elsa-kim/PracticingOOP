@@ -52,7 +52,7 @@ public class RecommendMenu {
     private static ExcludedMenus requestCannotEatFoodsFor(CoachName name) {
         outputView.requestCannotEatFoodsMessage(name.getName());
         try {
-            return ExcludedMenus.from(inputView.readExcludedFoodsInput().getFoods());
+            return ExcludedMenus.from(inputView.readInput());
         } catch (IllegalArgumentException e) {
             outputView.printError(e);
             return requestCannotEatFoodsFor(name);
@@ -61,9 +61,8 @@ public class RecommendMenu {
 
     private CoachNames settingCoachesName() {
         outputView.requireCoachNameMessage();
-        List<String> names = inputView.readCoachesNameInput().getNames();
         try {
-            return CoachNames.from(names);
+            return CoachNames.from(inputView.readInput());
         } catch (IllegalArgumentException e) {
             outputView.printError(e);
             return settingCoachesName();

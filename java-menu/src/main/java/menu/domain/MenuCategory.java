@@ -16,14 +16,10 @@ public enum MenuCategory {
     }
 
     public static MenuCategory pickOne() {
-        return MenuCategory.values()[pickRandomNumber() - 1];
+        return MenuCategory.values()[Randoms.pickNumberInRange(1, MenuCategory.values().length) - 1];
     }
 
     public String getLabel() {
         return this.label;
-    }
-
-    private static int pickRandomNumber() {
-        return Randoms.pickNumberInRange(1, MenuCategory.values().length);
     }
 }

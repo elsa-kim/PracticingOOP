@@ -1,5 +1,6 @@
 package menu.domain;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,8 +19,8 @@ public class CoachNames {
         this.coachNames = coachNames;
     }
 
-    public static CoachNames from(List<String> coachesName) {
-        List<CoachName> names = coachesName.stream()
+    public static CoachNames from(String coachesName) {
+        List<CoachName> names = Arrays.stream(coachesName.split(",", -1))
                 .map(CoachName::from)
                 .collect(Collectors.toList());
 
@@ -36,7 +37,7 @@ public class CoachNames {
         validateMaximumCoachCount(names.size());
     }
 
-    private static void validateDuplicate(List<CoachName> names) {
+    private void validateDuplicate(List<CoachName> names) {
         if (isDuplicate(names)) {
             throw new IllegalArgumentException(ERROR_DUPLICATE_COACH_NAME);
         }
@@ -54,7 +55,7 @@ public class CoachNames {
         }
     }
 
-    private static boolean isDuplicate(List<CoachName> names) {
+    private boolean isDuplicate(List<CoachName> names) {
         return names.stream().distinct().count() != names.size();
     }
 }

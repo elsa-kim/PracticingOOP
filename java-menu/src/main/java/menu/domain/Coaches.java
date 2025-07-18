@@ -22,7 +22,7 @@ public class Coaches {
             });
         }
 
-        List<Coach> Coaches = generateCoaches(recommendMenusMap);
+        List<Coach> Coaches = generateCoaches(recommendMenusMap, infoMap);
 
         return new Coaches(Coaches);
     }
@@ -31,10 +31,10 @@ public class Coaches {
         return List.copyOf(coaches);
     }
 
-    private static List<Coach> generateCoaches(Map<CoachName, List<Menu>> recommends) {
+    private static List<Coach> generateCoaches(Map<CoachName, List<Menu>> recommends, Map<CoachName, ExcludedMenus> infoMap) {
         List<Coach> Coaches = new ArrayList<>();
         recommends.forEach((coachName, recommendMenus) -> {
-            Coach coach = Coach.of(coachName, recommendMenus);
+            Coach coach = Coach.of(coachName, recommendMenus, infoMap.get(coachName));
             Coaches.add(coach);
         });
         return Coaches;

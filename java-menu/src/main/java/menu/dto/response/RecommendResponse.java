@@ -6,8 +6,8 @@ import menu.domain.MenuCategory;
 import menu.domain.RecommendCategories;
 
 public class RecommendResponse {
-    List<String> menuCategories;
-    List<CoachResponse> coaches;
+    private final List<String> menuCategories;
+    private final List<CoachResponse> coaches;
 
     private RecommendResponse(List<String> menuCategories, List<CoachResponse> coaches) {
         this.menuCategories = menuCategories;

@@ -6,8 +6,8 @@ import menu.domain.Coach;
 import menu.domain.Menu;
 
 public class CoachResponse {
-    String coachName;
-    List<String> recommendMenus;
+    private final String coachName;
+    private final List<String> recommendMenus;
 
     private CoachResponse(String coachName, List<String> recommendMenus) {
         this.coachName = coachName;
