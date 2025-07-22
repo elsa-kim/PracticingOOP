@@ -6,13 +6,12 @@ import java.util.stream.Collectors;
 
 public class CoachNames {
     private static final String ERROR_DUPLICATE_COACH_NAME = "중복된 이름을 입력할 수 없습니다.";
-    private static final String ERROR_MINIMUM_COACH_COUNT = "코치는 최소 %d명 이상 입력해야 합니다.";
-    private static final String ERROR_MAXIMUM_COACH_COUNT = "코치는 최대 %d명 이하 입력해야 합니다.";
+    private static final String ERROR_COACH_COUNT = "코치는 %d명 이상 %d명 이하로 입력해야 합니다.";
 
     private static final int MIN_COACH_COUNT = 2;
     private static final int MAX_COACH_COUNT = 5;
 
-    List<CoachName> coachNames;
+    private final List<CoachName> coachNames;
 
     private CoachNames(List<CoachName> coachNames) {
         validate(coachNames);
@@ -33,8 +32,7 @@ public class CoachNames {
 
     private void validate(List<CoachName> names) {
         validateDuplicate(names);
-        validateMinimumCoachCount(names.size());
-        validateMaximumCoachCount(names.size());
+        validateCoachCount(names.size());
     }
 
     private void validateDuplicate(List<CoachName> names) {
@@ -43,15 +41,9 @@ public class CoachNames {
         }
     }
 
-    private void validateMinimumCoachCount(int coachesNumber) {
-        if (coachesNumber < MIN_COACH_COUNT) {
-            throw new IllegalArgumentException(String.format(ERROR_MINIMUM_COACH_COUNT, MIN_COACH_COUNT));
-        }
-    }
-
-    private void validateMaximumCoachCount(int coachesNumber) {
-        if (coachesNumber > MAX_COACH_COUNT) {
-            throw new IllegalArgumentException(String.format(ERROR_MAXIMUM_COACH_COUNT, MAX_COACH_COUNT));
+    private void validateCoachCount(int coachesNumber) {
+        if (coachesNumber < MIN_COACH_COUNT || coachesNumber > MAX_COACH_COUNT) {
+            throw new IllegalArgumentException(String.format(ERROR_COACH_COUNT, MIN_COACH_COUNT, MAX_COACH_COUNT));
         }
     }
 

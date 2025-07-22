@@ -27,7 +27,7 @@ public class Coach {
     }
 
     private void validate(RecommendMenus recommendMenus, ExcludedMenus excludedMenus) {
-        if(isIncludeExcludedMenu(recommendMenus, excludedMenus)){
+        if (isIncludeExcludedMenu(recommendMenus, excludedMenus)) {
             throw new IllegalArgumentException(ERROR_EXCLUDED_MENU_INCLUDED);
         }
     }

@@ -4,7 +4,6 @@ import java.util.Objects;
 
 public class CoachName {
     private static final String ERROR_INVALID_COACH_NAME_LENGTH = "코치의 이름은 %d자 이상 %d자 이하로 입력해야합니다.";
-    private static final String ERROR_COACH_NAME_BLANK = "코치 이름은 공백일 수 없습니다.";
 
     private static final int MIN_NAME_LENGTH = 2;
     private static final int MAX_NAME_LENGTH = 4;
@@ -29,12 +28,9 @@ public class CoachName {
             throw new IllegalArgumentException(
                     String.format(ERROR_INVALID_COACH_NAME_LENGTH, MIN_NAME_LENGTH, MAX_NAME_LENGTH));
         }
-        if (name.isBlank()) {
-            throw new IllegalArgumentException(ERROR_COACH_NAME_BLANK);
-        }
     }
 
-    private static boolean isInvalidLength(String name) {
+    private boolean isInvalidLength(String name) {
         return name.length() < MIN_NAME_LENGTH || name.length() > MAX_NAME_LENGTH;
     }
 

@@ -1,18 +1,19 @@
-package menu.domain;
+package menu.service;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import menu.domain.Coach;
+import menu.domain.CoachName;
+import menu.domain.ExcludedMenus;
+import menu.domain.Menu;
+import menu.domain.MenuCategory;
+import menu.domain.RecommendCategories;
 
-public class Coaches {
-    private final List<Coach> coaches;
+public class Recommender {
 
-    private Coaches(List<Coach> coaches) {
-        this.coaches = coaches;
-    }
-
-    public static Coaches generate(RecommendCategories recommendCategories, Map<CoachName, ExcludedMenus> infoMap) {
+    public List<Coach> generate(RecommendCategories recommendCategories, Map<CoachName, ExcludedMenus> infoMap) {
         Map<CoachName, List<Menu>> recommendMenusMap = new LinkedHashMap<>();
 
         for (MenuCategory menuCategory : recommendCategories.getMenuCategories()) {
@@ -22,16 +23,10 @@ public class Coaches {
             });
         }
 
-        List<Coach> Coaches = generateCoaches(recommendMenusMap, infoMap);
-
-        return new Coaches(Coaches);
+        return generateCoaches(recommendMenusMap, infoMap);
     }
 
-    public List<Coach> getCoaches() {
-        return List.copyOf(coaches);
-    }
-
-    private static List<Coach> generateCoaches(Map<CoachName, List<Menu>> recommends, Map<CoachName, ExcludedMenus> infoMap) {
+    private List<Coach> generateCoaches(Map<CoachName, List<Menu>> recommends, Map<CoachName, ExcludedMenus> infoMap) {
         List<Coach> Coaches = new ArrayList<>();
         recommends.forEach((coachName, recommendMenus) -> {
             Coach coach = Coach.of(coachName, recommendMenus, infoMap.get(coachName));
@@ -40,10 +35,10 @@ public class Coaches {
         return Coaches;
     }
 
-    private static List<Menu> pickMenu(CoachName coachName,
-                                       ExcludedMenus excludedMenus,
-                                       Map<CoachName, List<Menu>> recommendMenusMap,
-                                       MenuCategory pickedCategory) {
+    private List<Menu> pickMenu(CoachName coachName,
+                                ExcludedMenus excludedMenus,
+                                Map<CoachName, List<Menu>> recommendMenusMap,
+                                MenuCategory pickedCategory) {
         List<Menu> recommends = recommendMenusMap.getOrDefault(coachName, new ArrayList<>());
 
         Menu pickedMenu = Menu.pickOne(pickedCategory);
@@ -54,7 +49,7 @@ public class Coaches {
         return recommends;
     }
 
-    private static boolean cannotAdd(ExcludedMenus excludedMenus, List<Menu> menus, Menu pickedMenu) {
+    private boolean cannotAdd(ExcludedMenus excludedMenus, List<Menu> menus, Menu pickedMenu) {
         return excludedMenus.isContain(pickedMenu) || menus.contains(pickedMenu);
     }
 }

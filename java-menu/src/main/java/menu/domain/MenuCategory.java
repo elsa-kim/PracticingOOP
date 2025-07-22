@@ -9,7 +9,7 @@ public enum MenuCategory {
     ASIAN("아시안"),
     WESTERN("양식");
 
-    private String label;
+    private final String label;
 
     MenuCategory(String label) {
         this.label = label;

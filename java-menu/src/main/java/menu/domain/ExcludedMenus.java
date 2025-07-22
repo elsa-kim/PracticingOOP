@@ -1,5 +1,6 @@
 package menu.domain;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,6 +19,10 @@ public class ExcludedMenus {
     }
 
     public static ExcludedMenus from(String foodNames) {
+        if (foodNames.isBlank()) {
+            return new ExcludedMenus(new ArrayList<>());
+        }
+
         List<Menu> excludedMenus = Arrays.stream(foodNames.split(",", -1))
                 .map(Menu::from)
                 .collect(Collectors.toList());

@@ -28,7 +28,7 @@ public class RecommendMenus {
     }
 
     private void validateFoodsCount(int recommendMenuCount) {
-        if(recommendMenuCount != RECOMMENDED_MENU_COUNT){
+        if (recommendMenuCount != RECOMMENDED_MENU_COUNT) {
             throw new IllegalArgumentException(ERROR_INVALID_RECOMMENDED_MENU_COUNT);
         }
     }
