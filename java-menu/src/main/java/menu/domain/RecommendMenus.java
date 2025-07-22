@@ -3,7 +3,7 @@ package menu.domain;
 import java.util.List;
 
 public class RecommendMenus {
-    private static final String ERROR_DUPLICATE_MENU = "이미 포함된 메뉴입니다.";
+    private static final String ERROR_DUPLICATE_MENU = "추천된 메뉴에 중복이 있습니다.";
     private static final String ERROR_INVALID_RECOMMENDED_MENU_COUNT = "추천된 메뉴 수가 올바르지 않습니다.";
     private static final int RECOMMENDED_MENU_COUNT = 5;
 
