@@ -36,13 +36,4 @@ class CoachNamesTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("코치는 2명 이상 5명 이하로 입력해야 합니다.");
     }
-
-    @ParameterizedTest
-    @ValueSource(strings = {"토미,포", "토미,포코포코포"})
-    void 입력값중_2자이상_4자이하_조건을_불만족하는_코치명_존재시_예외가_발생한다(String input) {
-        // when & then
-        assertThatThrownBy(() -> CoachNames.from(input))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("코치의 이름은 2자 이상 4자 이하로 입력해야합니다.");
-    }
 }

@@ -40,16 +40,7 @@ public class Recommender {
                                 Map<CoachName, List<Menu>> recommendMenusMap,
                                 MenuCategory pickedCategory) {
         List<Menu> recommends = recommendMenusMap.getOrDefault(coachName, new ArrayList<>());
-
-        Menu pickedMenu = Menu.pickOne(pickedCategory);
-        while (cannotAdd(excludedMenus, recommends, pickedMenu)) {
-            pickedMenu = Menu.pickOne(pickedCategory);
-        }
-        recommends.add(pickedMenu);
+        recommends.add(Menu.pickOne(pickedCategory, excludedMenus, recommends));
         return recommends;
-    }
-
-    private boolean cannotAdd(ExcludedMenus excludedMenus, List<Menu> menus, Menu pickedMenu) {
-        return excludedMenus.isContain(pickedMenu) || menus.contains(pickedMenu);
     }
 }

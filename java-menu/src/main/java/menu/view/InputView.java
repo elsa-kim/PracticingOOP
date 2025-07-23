@@ -12,11 +12,14 @@ public class InputView {
 
     public String readNames() {
         String input = readInput();
+        validateNoBlank(input);
+        return input;
+    }
+
+    public static void validateNoBlank(String input) {
         if (hasBlankValue(input)) {
             throw new IllegalArgumentException(ERROR_INVALID_INPUT);
         }
-
-        return input;
     }
 
     private static boolean hasBlankValue(String input) {

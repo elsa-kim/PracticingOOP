@@ -22,6 +22,10 @@ public class Coach {
         return this.name.getName();
     }
 
+    public RecommendMenus getRecommendMenus() {
+        return this.recommendMenus;
+    }
+
     public List<Menu> getRecommendFoods() {
         return this.recommendMenus.getRecommendedFoods();
     }

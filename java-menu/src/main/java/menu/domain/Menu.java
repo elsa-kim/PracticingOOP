@@ -2,6 +2,7 @@ package menu.domain;
 
 import camp.nextstep.edu.missionutils.Randoms;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 import static menu.domain.MenuCategory.ASIAN;
 import static menu.domain.MenuCategory.CHINESE;
@@ -70,31 +71,32 @@ public enum Menu {
         this.menuCategory = menuCategory;
     }
 
-    public String getLabel() {
-        return label;
-    }
-
     public static Menu from(String input) {
         return Arrays.stream(Menu.values())
                 .filter(menu -> menu.getLabel().equals(input))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException(ERROR_INVALID_MENU)
-                );
+                .orElseThrow(() -> new IllegalArgumentException(ERROR_INVALID_MENU));
     }
 
-    public static Menu pickOne(MenuCategory pickedCategory) {
-        return Menu.from(pickAtRandom(pickedCategory));
+    public static Menu pickOne(MenuCategory pickedCategory, ExcludedMenus excludedMenus, List<Menu> pickedMenus) {
+        List<String> menus = findMenusByCategory(pickedCategory, excludedMenus, pickedMenus);
+        return Menu.from(Randoms.shuffle(menus).get(0));
     }
 
-    private static String pickAtRandom(MenuCategory pickedCategory) {
-        return Randoms.shuffle(Arrays.stream(Menu.values())
-                        .filter(menu -> menu.getMenuCategory().equals(pickedCategory))
-                        .map(Menu::getLabel)
-                        .collect(Collectors.toList()))
-                .get(0);
+    private static List<String> findMenusByCategory(MenuCategory pickedCategory, ExcludedMenus excludedMenus, List<Menu> pickedMenus) {
+        return Arrays.stream(Menu.values())
+                .filter(menu -> menu.isSameCategory(pickedCategory))
+                .filter(menu -> !excludedMenus.isContain(menu))
+                .filter(menu -> !pickedMenus.contains(menu))
+                .map(Menu::getLabel)
+                .collect(Collectors.toList());
     }
 
-    private MenuCategory getMenuCategory() {
-        return menuCategory;
+    public String getLabel() {
+        return this.label;
+    }
+
+    private boolean isSameCategory(MenuCategory category) {
+        return this.menuCategory.equals(category);
     }
 }

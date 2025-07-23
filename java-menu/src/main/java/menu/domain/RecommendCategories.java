@@ -19,11 +19,7 @@ public class RecommendCategories {
     public static RecommendCategories generate() {
         List<MenuCategory> menuCategories = new ArrayList<>();
         while (menuCategories.size() < WEEKLY_MENU_CATEGORY_COUNT) {
-            MenuCategory pickedCategory = MenuCategory.pickOne();
-            if (isCategoryPickedTwice(menuCategories, pickedCategory)) {
-                continue;
-            }
-            menuCategories.add(pickedCategory);
+            menuCategories.add(MenuCategory.pickOne(menuCategories));
         }
         return new RecommendCategories(menuCategories);
     }
@@ -34,7 +30,7 @@ public class RecommendCategories {
 
     private static boolean isCategoryPickedTwice(List<MenuCategory> menuCategories, MenuCategory pick) {
         return menuCategories.stream()
-                .filter(category -> category == pick)
+                .filter(pick::equals)
                 .count() >= MAX_DUPLICATE_CATEGORY_COUNT;
     }
 
@@ -54,7 +50,7 @@ public class RecommendCategories {
 
     private static boolean isExceedingDuplicateLimit(List<MenuCategory> menuCategories, MenuCategory menuCategory) {
         return menuCategories.stream()
-                .filter(category -> category == menuCategory)
+                .filter(menuCategory::equals)
                 .count() > MAX_DUPLICATE_CATEGORY_COUNT;
     }
 
