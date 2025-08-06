@@ -7,14 +7,16 @@ import camp.nextstep.edu.missionutils.Console;
  */
 public class InputView {
 
+    private static final String ERROR_INVALID_FORMAT = "숫자 형식이 아닙니다.";
+
     /**
      * 다리의 길이를 입력받는다.
      */
     public int readBridgeSize() {
         try {
-            return Integer.parseInt(Console.readLine());
+            return Integer.parseInt(readInput());
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("숫자 형식이 아닙니다.");
+            throw new IllegalArgumentException(ERROR_INVALID_FORMAT);
         }
     }
 
@@ -22,7 +24,11 @@ public class InputView {
      * 사용자가 이동할 칸을 입력받는다.
      */
     public String readMoving() {
-        return null;
+        String input = readInput();
+        if(input.isBlank()){
+            throw new IllegalArgumentException("빈 값은 입력할 수 없습니다.");
+        }
+        return input;
     }
 
     /**
@@ -30,5 +36,9 @@ public class InputView {
      */
     public String readGameCommand() {
         return null;
+    }
+
+    private static String readInput() {
+        return Console.readLine();
     }
 }
