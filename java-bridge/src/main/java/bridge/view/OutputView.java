@@ -1,5 +1,6 @@
-package bridge;
+package bridge.view;
 
+import bridge.dto.response.ChoicesResponse;
 import java.util.List;
 
 /**
