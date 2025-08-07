@@ -18,23 +18,50 @@ public class Application {
 
     private static void runBridgeCrossing(int size, BridgeGame game) {
         List<Direction> userDirection =new ArrayList<>();
+        List<String[]> result = new ArrayList<>();
         for(int i = 0; i< size; i++) {
-            userDirection.add(Direction.from(inputView.readMoving()));
+            handleUserDirectionInput(userDirection);
             if(!game.move(userDirection.get(i), i)){
-                outputView.printRetryMessage();
-                processRetryOrQuit(size, game);
-                break;
-            };
+                result.add(new String[]{userDirection.get(i).toString(), "X"});
+                outputView.printMap(ChoicesResponse.generate(result));
+                handleRetry(size, game, result);
+                return;
+            }else{
+                result.add(new String[]{userDirection.get(i).toString(), "O"});
+                outputView.printMap(ChoicesResponse.generate(result));
+            }
+
+        }
+        outputView.printResult(ChoicesResponse.generate(result), true, game.getTryCount());
+    }
+
+    private static void handleRetry(int size, BridgeGame game, List<String[]> result) {
+        outputView.printRetryMessage();
+        try {
+            processRetryOrQuit(size, game, ChoicesResponse.generate(result));
+        } catch (IllegalArgumentException e) {
+            outputView.printError(e);
+            handleRetry(size, game, result);
         }
     }
 
-    private static void processRetryOrQuit(int size, BridgeGame game) {
+    private static void handleUserDirectionInput(List<Direction> userDirection) {
+        outputView.printRequestChoice();
+        try {
+            userDirection.add(Direction.from(inputView.readMoving()));
+        } catch (IllegalArgumentException e) {
+            outputView.printError(e);
+            handleUserDirectionInput(userDirection);
+        }
+    }
+
+    private static void processRetryOrQuit(int size, BridgeGame game, ChoicesResponse choicesResponse) {
         GameCommand command = GameCommand.from(inputView.readGameCommand());
         if(command == GameCommand.RETRY){
-            runBridgeCrossing(size, game);
+            runBridgeCrossing(size, game.retry());
         }
         if(command == GameCommand.QUIT){
-            outputView.printResult();
+            outputView.printResult(choicesResponse, false, game.getTryCount());
         }
     }
 
