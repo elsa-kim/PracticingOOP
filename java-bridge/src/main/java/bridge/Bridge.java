@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 public class Bridge {
     private static final int MIN_LENGTH = 3;
     private static final int MAX_LENGTH = 20;
-    private static final String ERROR_INVALID_LENGTH = "다리 길이는 %d 이상 %d 이하로 설정해야합니다.";
+    private static final String ERROR_INVALID_LENGTH = "다리 길이는 %d부터 %d 사이의 숫자여야 합니다.";
 
     private final List<Direction> bridge;
 
