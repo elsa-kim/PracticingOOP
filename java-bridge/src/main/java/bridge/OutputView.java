@@ -36,6 +36,7 @@ public class OutputView {
     public void printMap(ChoicesResponse response) {
         printPart(response.getSize(), response.getTop());
         printPart(response.getSize(), response.getBottom());
+        System.out.println();
     }
 
     /**
@@ -46,7 +47,6 @@ public class OutputView {
     public void printResult(ChoicesResponse response, boolean isSuccess, int tryCount) {
         System.out.println("최종 게임 결과");
         printMap(response);
-        System.out.println();
         System.out.print("게임 성공 여부: ");
         if(isSuccess){
             System.out.println("성공");
