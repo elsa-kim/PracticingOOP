@@ -12,12 +12,30 @@ public class Application {
         outputView.printStartMessage();
         int size = getSize();
         BridgeGame game = BridgeGame.initialize(size);
-        List<String> userChoice =new ArrayList<>();
-        for(int i=0; i<size; i++) {
-            userChoice.add(inputView.readMoving());
-            
-        }
+        runBridgeCrossing(size, game);
 
+    }
+
+    private static void runBridgeCrossing(int size, BridgeGame game) {
+        List<Direction> userDirection =new ArrayList<>();
+        for(int i = 0; i< size; i++) {
+            userDirection.add(Direction.from(inputView.readMoving()));
+            if(!game.move(userDirection.get(i), i)){
+                outputView.printRetryMessage();
+                processRetryOrQuit(size, game);
+                break;
+            };
+        }
+    }
+
+    private static void processRetryOrQuit(int size, BridgeGame game) {
+        GameCommand command = GameCommand.from(inputView.readGameCommand());
+        if(command == GameCommand.RETRY){
+            runBridgeCrossing(size, game);
+        }
+        if(command == GameCommand.QUIT){
+            outputView.printResult();
+        }
     }
 
     private static int getSize() {

@@ -25,9 +25,7 @@ public class InputView {
      */
     public String readMoving() {
         String input = readInput();
-        if(input.isBlank()){
-            throw new IllegalArgumentException("빈 값은 입력할 수 없습니다.");
-        }
+        validateBlank(input);
         return input;
     }
 
@@ -35,10 +33,18 @@ public class InputView {
      * 사용자가 게임을 다시 시도할지 종료할지 여부를 입력받는다.
      */
     public String readGameCommand() {
-        return null;
+        String input = readInput();
+        validateBlank(input);
+        return input;
     }
 
-    private static String readInput() {
+    private void validateBlank(String input) {
+        if(input.isBlank()){
+            throw new IllegalArgumentException("빈 값은 입력할 수 없습니다.");
+        }
+    }
+
+    private String readInput() {
         return Console.readLine();
     }
 }

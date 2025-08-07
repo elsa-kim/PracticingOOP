@@ -1,23 +1,33 @@
 package bridge;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class Bridge {
     private static final int MIN_LENGTH = 3;
     private static final int MAX_LENGTH = 20;
     private static final String ERROR_INVALID_LENGTH = "다리 길이는 %d 이상 %d 이하로 설정해야합니다.";
 
-    private final List<String> bridge;
+    private final List<Direction> bridge;
 
     private Bridge(int size) {
         BridgeNumberGenerator bridgeNumberGenerator = new BridgeRandomNumberGenerator();
         BridgeMaker bridgeMaker = new BridgeMaker(bridgeNumberGenerator);
         validate(size);
-        this.bridge = bridgeMaker.makeBridge(size);
+
+        this.bridge = bridgeMaker.makeBridge(size)
+                .stream()
+                .map(Direction::from)
+                .collect(Collectors.toList());
     }
 
     public static Bridge generate(int size) {
         return new Bridge(size);
+    }
+
+    public boolean isCorrect(Direction direction, int index) {
+        return Objects.equals(bridge.get(index), direction);
     }
 
     private void validate(int size) {
