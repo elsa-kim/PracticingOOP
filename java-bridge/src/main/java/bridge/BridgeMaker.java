@@ -8,6 +8,11 @@ import java.util.List;
  */
 public class BridgeMaker {
 
+    private static final String DOWN = "D";
+    private static final String UP = "U";
+    private static final int DOWN_NUMBER = 0;
+    private static final int UP_NUMBER = 1;
+
     private final BridgeNumberGenerator bridgeNumberGenerator;
 
     public BridgeMaker(BridgeNumberGenerator bridgeNumberGenerator) {
@@ -22,11 +27,11 @@ public class BridgeMaker {
         List<String> bridge = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             int bridgeNumber = bridgeNumberGenerator.generate();
-            if(bridgeNumber == 0) {
-                bridge.add("D");
+            if(bridgeNumber == DOWN_NUMBER) {
+                bridge.add(DOWN);
             }
-            if(bridgeNumber == 1) {
-                bridge.add("U");
+            if(bridgeNumber == UP_NUMBER) {
+                bridge.add(UP);
             }
         }
         return bridge;

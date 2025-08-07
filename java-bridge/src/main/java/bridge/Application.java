@@ -4,16 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Application {
+    private static final String FAIL_SYMBOL = "X";
+    private static final String SUCCESS_SYMBOL = "O";
+
     private static final InputView inputView = new InputView();
     private static final OutputView outputView = new OutputView();
 
     public static void main(String[] args) {
-        // TODO: 프로그램 구현
         outputView.printStartMessage();
-        int size = getSize();
+        int size = requestBridgeSize();
         BridgeGame game = BridgeGame.initialize(size);
         runBridgeCrossing(size, game);
-
     }
 
     private static void runBridgeCrossing(int size, BridgeGame game) {
@@ -22,12 +23,12 @@ public class Application {
         for(int i = 0; i< size; i++) {
             handleUserDirectionInput(userDirection);
             if(!game.move(userDirection.get(i), i)){
-                result.add(new String[]{userDirection.get(i).toString(), "X"});
+                result.add(new String[]{userDirection.get(i).toString(), FAIL_SYMBOL});
                 outputView.printMap(ChoicesResponse.generate(result));
                 handleRetry(size, game, result);
                 return;
             }else{
-                result.add(new String[]{userDirection.get(i).toString(), "O"});
+                result.add(new String[]{userDirection.get(i).toString(), SUCCESS_SYMBOL});
                 outputView.printMap(ChoicesResponse.generate(result));
             }
 
@@ -65,13 +66,13 @@ public class Application {
         }
     }
 
-    private static int getSize() {
+    private static int requestBridgeSize() {
         outputView.printRequestBridgeSize();
         try {
             return inputView.readBridgeSize();
         } catch (IllegalArgumentException e) {
             outputView.printError(e);
-            return getSize();
+            return requestBridgeSize();
         }
     }
 }

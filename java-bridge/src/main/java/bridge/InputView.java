@@ -8,6 +8,7 @@ import camp.nextstep.edu.missionutils.Console;
 public class InputView {
 
     private static final String ERROR_INVALID_FORMAT = "숫자 형식이 아닙니다.";
+    private static final String ERROR_INVALID_INPUT = "빈 값은 입력할 수 없습니다.";
 
     /**
      * 다리의 길이를 입력받는다.
@@ -40,11 +41,11 @@ public class InputView {
 
     private void validateBlank(String input) {
         if(input.isBlank()){
-            throw new IllegalArgumentException("빈 값은 입력할 수 없습니다.");
+            throw new IllegalArgumentException(ERROR_INVALID_INPUT);
         }
     }
 
     private String readInput() {
-        return Console.readLine();
+        return Console.readLine().trim();
     }
 }

@@ -3,15 +3,13 @@ package bridge;
 import java.util.Arrays;
 
 public enum Direction {
-    UP("U", 1),
-    DOWN("D", 0);
+    UP("U"),
+    DOWN("D");
 
     private final String inputKey;
-    private final int bridgeNumber;
 
-    private Direction(String inputKey, int bridgeNumber) {
+    private Direction(String inputKey) {
         this.inputKey = inputKey;
-        this.bridgeNumber = bridgeNumber;
     }
 
     public static Direction from(String input){

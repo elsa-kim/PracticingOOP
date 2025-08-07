@@ -6,6 +6,7 @@ public enum GameCommand {
     RETRY("R"),
     QUIT("Q");
 
+    private static final String ERROR_INVALID_INPUT = "잘못된 입력입니다.";
     private final String inputKey;
 
     private GameCommand(String inputKey) {
@@ -16,6 +17,6 @@ public enum GameCommand {
         return Arrays.stream(GameCommand.values())
                 .filter(x -> x.inputKey.equals(input))
                 .findFirst()
-                .orElseThrow(()-> new IllegalArgumentException("잘못된 입력입니다."));
+                .orElseThrow(()-> new IllegalArgumentException(ERROR_INVALID_INPUT));
     }
 }
